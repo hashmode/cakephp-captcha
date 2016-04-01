@@ -8,9 +8,13 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Hashmode",
-            "email": "hashmodecom@gmail.com"
+            "name": "Hashmode"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "CakephpCaptcha\\": "src"
+        }
+    }
 }

@@ -8,12 +8,13 @@ use CakephpCaptcha\PhpCaptcha;
  *
  */
 class CaptchaComponent extends Component {
-	var $controller;
 
 	function image($count = null) {
 		if (!$count || $count < 3) {
 			$count = 5;
 		}
+		
+		return "test";
 		
 		$imagesPath = APP . 'Vendor' . DS . 'phpcaptcha' . DS . 'fonts' . DS;
 		
