@@ -1,0 +1,16 @@
+{
+    "name": "hashmode/cakephp-captcha",
+    "description": "Captcha for cakephp 3",
+    "type": "cakephp-plugin",
+    "require": {
+        "cakephp/cakephp": "~3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hashmode",
+            "email": "hashmodecom@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
