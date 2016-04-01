@@ -10,13 +10,19 @@ use CakephpCaptcha\Lib\PhpCaptcha;
  */
 class CaptchaComponent extends Component {
 
+	/**
+	 * image method
+	 * 
+	 * @param int $count
+	 * @return string - the image's content
+	 */
 	function image($count = null) {
 		if (!$count || $count < 3) {
 			$count = 5;
 		}
 		
 		$oVisualCaptcha = new PhpCaptcha();
-		
+
 		$oVisualCaptcha->UseColour(true);
 		$oVisualCaptcha->SetNumChars($count);
 		return $oVisualCaptcha->Create();

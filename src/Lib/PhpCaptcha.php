@@ -1,90 +1,52 @@
 <?php
+/**
+ * PhpCaptcha - A visual and audio CAPTCHA generation library
+ * 
+ * @author Edward Eliot
+ * @license BSD License
+ * @link http://www.ejeliot.com/pages/2
+ */
 namespace CakephpCaptcha\Lib;
+
 use Cake\Core\Exception\Exception;
 
-	/***************************************************************/
-   /* PhpCaptcha - A visual and audio CAPTCHA generation library
-   
-      Software License Agreement (BSD License)
-   
-      Copyright (C) 2005-2006, Edward Eliot.
-      All rights reserved.
-      
-      Redistribution and use in source and binary forms, with or without
-      modification, are permitted provided that the following conditions are met:
+define('CAPTCHA_SESSION_ID', 'php_captcha');
+define('CAPTCHA_WIDTH', 300);
+define('CAPTCHA_HEIGHT', 70);
+define('CAPTCHA_NUM_CHARS', 5);
+define('CAPTCHA_NUM_LINES', 70);
+define('CAPTCHA_CHAR_SHADOW', true);
+define('CAPTCHA_OWNER_TEXT', '');
+define('CAPTCHA_CHAR_SET', '');
+define('CAPTCHA_CASE_INSENSITIVE', true);
+define('CAPTCHA_BACKGROUND_IMAGES', '');
+define('CAPTCHA_MIN_FONT_SIZE', 16);
+define('CAPTCHA_MAX_FONT_SIZE', 25);
+define('CAPTCHA_USE_COLOUR', true);
+define('CAPTCHA_FILE_TYPE', 'jpeg');
+define('CAPTCHA_FLITE_PATH', '/usr/bin/flite');
+define('CAPTCHA_AUDIO_PATH', '/tmp/'); // must be writeable by PHP process
 
-         * Redistributions of source code must retain the above copyright
-           notice, this list of conditions and the following disclaimer.
-         * Redistributions in binary form must reproduce the above copyright
-           notice, this list of conditions and the following disclaimer in the
-           documentation and/or other materials provided with the distribution.
-         * Neither the name of Edward Eliot nor the names of its contributors 
-           may be used to endorse or promote products derived from this software 
-           without specific prior written permission of Edward Eliot.
 
-      THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS" AND ANY
-      EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-      WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-      DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY
-      DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-      (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-      LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-      ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-      (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-      SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-   
-      Last Updated:  18th April 2006                               */
-   /***************************************************************/
-   
-   /************************ Documentation ************************/
-   /*
-   
-   Documentation is available at http://www.ejeliot.com/pages/2
-   
-   */
-   /************************ Default Options **********************/
-   
-   // start a PHP session - this class uses sessions to store the generated 
-   // code. Comment out if you are calling already from your application
-//   session_start();
-   
-   // class defaults - change to effect globally
-   
-   define('CAPTCHA_SESSION_ID', 'php_captcha');
-   define('CAPTCHA_WIDTH', 300); // max 500
-   define('CAPTCHA_HEIGHT', 70); // max 200
-   define('CAPTCHA_NUM_CHARS', 5);
-   define('CAPTCHA_NUM_LINES', 70);
-   define('CAPTCHA_CHAR_SHADOW', false);
-   define('CAPTCHA_OWNER_TEXT', '');
-   define('CAPTCHA_CHAR_SET', ''); // defaults to A-Z
-   define('CAPTCHA_CASE_INSENSITIVE', true);
-   define('CAPTCHA_BACKGROUND_IMAGES', '');
-   define('CAPTCHA_MIN_FONT_SIZE', 16);
-   define('CAPTCHA_MAX_FONT_SIZE', 25);
-   define('CAPTCHA_USE_COLOUR', true);
-   define('CAPTCHA_FILE_TYPE', 'jpeg');
-   define('CAPTCHA_FLITE_PATH', '/usr/bin/flite');
-   define('CAPTCHA_AUDIO_PATH', '/tmp/'); // must be writeable by PHP process
-   
 class PhpCaptcha {
-	var $oImage;
-	var $aFonts;
-	var $iWidth;
-	var $iHeight;
-	var $iNumChars;
-	var $iNumLines;
-	var $iSpacing;
-	var $bCharShadow;
-	var $sOwnerText;
-	var $aCharSet;
-	var $bCaseInsensitive;
-	var $vBackgroundImages;
-	var $iMinFontSize;
-	var $iMaxFontSize;
-	var $bUseColour;
-	var $sFileType;
-	var $sCode = '';
+
+	public $oImage;
+	public $aFonts;
+	public $iWidth;
+	public $iHeight;
+	public $iNumChars;
+	public $iNumLines;
+	public $iSpacing;
+	public $bCharShadow;
+	public $sOwnerText;
+	public $aCharSet;
+	public $bCaseInsensitive;
+	public $vBackgroundImages;
+	public $iMinFontSize;
+	public $iMaxFontSize;
+	public $bUseColour;
+	public $sFileType;
+	public $sCode = '';
       
 	function __construct($settings = []) {
 		$imagesPath = dirname(__FILE__) . DS . 'fonts' . DS;
@@ -99,15 +61,15 @@ class PhpCaptcha {
 			$imagesPath . 'VeraMoIt.ttf',
 			$imagesPath . 'VeraMono.ttf',
 			$imagesPath . 'VeraSe.ttf',
-			$imagesPath . 'VeraSeBd.ttf'
+			$imagesPath . 'VeraSeBd.ttf' 
 		);
 		
-		$aFonts; // array of TrueType fonts to use - specify full path
-      	$iWidth = CAPTCHA_WIDTH; // width of image
-      	$iHeight = CAPTCHA_HEIGHT; // height of image
-      	
-         // get parameters
-         $this->aFonts = $aFonts;
+		$iWidth = CAPTCHA_WIDTH;
+		$iHeight = CAPTCHA_HEIGHT;
+
+		// get
+		                           // parameters
+		$this->aFonts = $aFonts;
 		$this->SetNumChars(CAPTCHA_NUM_CHARS);
 		$this->SetNumLines(CAPTCHA_NUM_LINES);
 		$this->DisplayShadow(CAPTCHA_CHAR_SHADOW);
@@ -122,16 +84,19 @@ class PhpCaptcha {
 		$this->SetWidth($iWidth);
 		$this->SetHeight($iHeight);
 	}
-      
-      function CalculateSpacing() {
-         $this->iSpacing = (int)($this->iWidth / $this->iNumChars);
-      }
-      
-      function SetWidth($iWidth) {
-         $this->iWidth = $iWidth;
-         if ($this->iWidth > 500) $this->iWidth = 500; // to prevent perfomance impact
-         $this->CalculateSpacing();
-      }
+
+	function CalculateSpacing() {
+		$this->iSpacing = (int) ($this->iWidth / $this->iNumChars);
+	}
+
+	function SetWidth($iWidth) {
+		$this->iWidth = $iWidth;
+		if ($this->iWidth > 500) {
+			$this->iWidth = 500;
+		}
+		
+		$this->CalculateSpacing();
+	}
       
       function SetHeight($iHeight) {
          $this->iHeight = $iHeight;
