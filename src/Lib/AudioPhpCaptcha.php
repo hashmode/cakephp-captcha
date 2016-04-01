@@ -1,5 +1,5 @@
 <?php 
-namespace CakephpCaptcha;
+namespace CakephpCaptcha\Lib;
 
 // this class will only work correctly if a visual CAPTCHA has been created first using PhpCaptcha
 class AudioPhpCaptcha {

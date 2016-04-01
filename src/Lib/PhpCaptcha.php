@@ -1,7 +1,8 @@
 <?php
-namespace CakephpCaptcha;
+namespace CakephpCaptcha\Lib;
+use Cake\Core\Exception\Exception;
 
-   /***************************************************************/
+	/***************************************************************/
    /* PhpCaptcha - A visual and audio CAPTCHA generation library
    
       Software License Agreement (BSD License)
@@ -66,50 +67,61 @@ namespace CakephpCaptcha;
    define('CAPTCHA_FLITE_PATH', '/usr/bin/flite');
    define('CAPTCHA_AUDIO_PATH', '/tmp/'); // must be writeable by PHP process
    
-   /************************ End Default Options **********************/
-   
-   // don't edit below this line (unless you want to change the class!)
-   
-   class PhpCaptcha {
-      var $oImage;
-      var $aFonts;
-      var $iWidth;
-      var $iHeight;
-      var $iNumChars;
-      var $iNumLines;
-      var $iSpacing;
-      var $bCharShadow;
-      var $sOwnerText;
-      var $aCharSet;
-      var $bCaseInsensitive;
-      var $vBackgroundImages;
-      var $iMinFontSize;
-      var $iMaxFontSize;
-      var $bUseColour;
-      var $sFileType;
-      var $sCode = '';
+class PhpCaptcha {
+	var $oImage;
+	var $aFonts;
+	var $iWidth;
+	var $iHeight;
+	var $iNumChars;
+	var $iNumLines;
+	var $iSpacing;
+	var $bCharShadow;
+	var $sOwnerText;
+	var $aCharSet;
+	var $bCaseInsensitive;
+	var $vBackgroundImages;
+	var $iMinFontSize;
+	var $iMaxFontSize;
+	var $bUseColour;
+	var $sFileType;
+	var $sCode = '';
       
-      function PhpCaptcha(
-         $aFonts, // array of TrueType fonts to use - specify full path
-         $iWidth = CAPTCHA_WIDTH, // width of image
-         $iHeight = CAPTCHA_HEIGHT // height of image
-      ) {
+	function __construct($settings = []) {
+		$imagesPath = dirname(__FILE__) . DS . 'fonts' . DS;
+		
+		$aFonts = array(
+			$imagesPath . 'VeraBd.ttf',
+			$imagesPath . 'VeraIt.ttf',
+			$imagesPath . 'Vera.ttf',
+			$imagesPath . 'VeraBI.ttf',
+			$imagesPath . 'VeraMoBd.ttf',
+			$imagesPath . 'VeraMoBI.ttf',
+			$imagesPath . 'VeraMoIt.ttf',
+			$imagesPath . 'VeraMono.ttf',
+			$imagesPath . 'VeraSe.ttf',
+			$imagesPath . 'VeraSeBd.ttf'
+		);
+		
+		$aFonts; // array of TrueType fonts to use - specify full path
+      	$iWidth = CAPTCHA_WIDTH; // width of image
+      	$iHeight = CAPTCHA_HEIGHT; // height of image
+      	
          // get parameters
          $this->aFonts = $aFonts;
-         $this->SetNumChars(CAPTCHA_NUM_CHARS);
-         $this->SetNumLines(CAPTCHA_NUM_LINES);
-         $this->DisplayShadow(CAPTCHA_CHAR_SHADOW);
-         $this->SetOwnerText(CAPTCHA_OWNER_TEXT);
-         $this->SetCharSet(CAPTCHA_CHAR_SET);
-         $this->CaseInsensitive(CAPTCHA_CASE_INSENSITIVE);
-         $this->SetBackgroundImages(CAPTCHA_BACKGROUND_IMAGES);
-         $this->SetMinFontSize(CAPTCHA_MIN_FONT_SIZE);
-         $this->SetMaxFontSize(CAPTCHA_MAX_FONT_SIZE);
-         $this->UseColour(CAPTCHA_USE_COLOUR);
-         $this->SetFileType(CAPTCHA_FILE_TYPE);   
-         $this->SetWidth($iWidth);
-         $this->SetHeight($iHeight);
-      }
+		$this->SetNumChars(CAPTCHA_NUM_CHARS);
+		$this->SetNumLines(CAPTCHA_NUM_LINES);
+		$this->DisplayShadow(CAPTCHA_CHAR_SHADOW);
+		$this->SetOwnerText(CAPTCHA_OWNER_TEXT);
+		$this->SetCharSet(CAPTCHA_CHAR_SET);
+		$this->CaseInsensitive(CAPTCHA_CASE_INSENSITIVE);
+		$this->SetBackgroundImages(CAPTCHA_BACKGROUND_IMAGES);
+		$this->SetMinFontSize(CAPTCHA_MIN_FONT_SIZE);
+		$this->SetMaxFontSize(CAPTCHA_MAX_FONT_SIZE);
+		$this->UseColour(CAPTCHA_USE_COLOUR);
+		$this->SetFileType(CAPTCHA_FILE_TYPE);
+		$this->SetWidth($iWidth);
+		$this->SetHeight($iHeight);
+	}
       
       function CalculateSpacing() {
          $this->iSpacing = (int)($this->iWidth / $this->iNumChars);
@@ -199,6 +211,7 @@ namespace CakephpCaptcha;
       }
       
       function SetFileType($sFileType) {
+      	
          // check for valid file type
          if (in_array($sFileType, array('gif', 'png', 'jpeg'))) {
             $this->sFileType = $sFileType;
@@ -335,9 +348,10 @@ namespace CakephpCaptcha;
       }
       
       function Create($sFilename = '') {
+      	
          // check for required gd functions
-         if (!function_exists('imagecreate') || !function_exists("image$this->sFileType") || ($this->vBackgroundImages != '' && !function_exists('imagecreatetruecolor'))) {
-            throw new CakeException('GD Library not found');
+         if (!function_exists('\imagecreate') || !function_exists("\image$this->sFileType") || ($this->vBackgroundImages != '' && !function_exists('\imagecreatetruecolor'))) {
+            throw new Exception('GD Library not found');
          }
          
          // get background image if specified and copy to CAPTCHA
@@ -405,5 +419,3 @@ namespace CakephpCaptcha;
       }
    }
    
-   
-?>

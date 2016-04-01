@@ -1,7 +1,7 @@
 <?php
 namespace CakephpCaptcha;
 
-use CakephpCaptcha\PhpCaptcha;
+use CakephpCaptcha\Lib\PhpCaptcha;
 
 // example sub class
 class PhpCaptchaColour extends PhpCaptcha {

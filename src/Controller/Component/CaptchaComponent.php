@@ -2,7 +2,8 @@
 namespace CakephpCaptcha\Controller\Component;
 
 use Cake\Controller\Component;
-use CakephpCaptcha\PhpCaptcha;
+use CakephpCaptcha\Lib\PhpCaptcha;
+
 /**
  * Captcha Component
  *
@@ -14,21 +15,9 @@ class CaptchaComponent extends Component {
 			$count = 5;
 		}
 		
-		return "test";
-		
-		$imagesPath = APP . 'Vendor' . DS . 'phpcaptcha' . DS . 'fonts' . DS;
-		
-		$aFonts = array(
-			$imagesPath . 'VeraBd.ttf',
-			$imagesPath . 'VeraIt.ttf',
-			$imagesPath . 'Vera.ttf' 
-		);
-		
-		$oVisualCaptcha = new PhpCaptcha($aFonts, 200, 60);
+		$oVisualCaptcha = new PhpCaptcha();
 		
 		$oVisualCaptcha->UseColour(true);
-		// $oVisualCaptcha->SetOwnerText('Source:
-		// '.FULL_BASE_URL);
 		$oVisualCaptcha->SetNumChars($count);
 		return $oVisualCaptcha->Create();
 	}
