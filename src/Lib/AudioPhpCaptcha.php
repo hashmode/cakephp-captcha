@@ -1,11 +1,19 @@
 <?php 
+/**
+ * PhpCaptcha - A visual and audio CAPTCHA generation library
+ *
+ * @author Edward Eliot
+ * @license BSD License
+ * @link http://www.ejeliot.com/pages/2
+ *
+ */
 namespace CakephpCaptcha\Lib;
 
 // this class will only work correctly if a visual CAPTCHA has been created first using PhpCaptcha
 class AudioPhpCaptcha {
-	var $sFlitePath;
-	var $sAudioPath;
-	var $sCode;
+	public $sFlitePath = '/usr/bin/flite';
+	public $sAudioPath = '/tmp/';
+	public $sCode = null;
 
 	function AudioPhpCaptcha(
 			$sFlitePath = CAPTCHA_FLITE_PATH, // path to flite binary

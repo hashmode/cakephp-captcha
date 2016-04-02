@@ -2,6 +2,7 @@
     "name": "hashmode/cakephp-captcha",
     "description": "Captcha for cakephp 3",
     "type": "cakephp-plugin",
+    "keywords": ["cakephp", "captcha"],
     "require": {
         "cakephp/cakephp": "~3.0"
     },
