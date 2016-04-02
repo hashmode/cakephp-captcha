@@ -17,7 +17,7 @@ Plugin::load('CakephpCaptcha');
 
 Load component in your controller's initialize function by
 ```
-$this->loadComponent('CakephpCaptcha.Captcha';)
+$this->loadComponent('CakephpCaptcha.Captcha');
 ```
 
 Add some function in your controller to call from view
