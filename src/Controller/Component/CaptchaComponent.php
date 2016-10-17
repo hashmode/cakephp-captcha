@@ -1,4 +1,5 @@
 <?php
+
 namespace CakephpCaptcha\Controller\Component;
 
 use Cake\Controller\Component;
@@ -10,19 +11,20 @@ use Cake\Event\Event;
  */
 class CaptchaComponent extends Component
 {
-
-    /** 
+    /**
      * holds PhpCaptcha object
      * @var object
      */
     private $visualCaptcha = null;
-    
+
     /**
      * startup method
      * 
      * @param Event $event
      */
-    public function startup(Event $event) {
+    public function startup(Event $event)
+    {
+        $this->request->session()->read();
         $this->visualCaptcha = new PhpCaptcha();
     }
 
