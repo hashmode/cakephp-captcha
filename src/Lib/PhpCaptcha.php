@@ -403,7 +403,7 @@ class PhpCaptcha {
     function Create($sFilename = '')
     {
         try {
-            if (! function_exists('\imagecreate') || ! function_exists("\image$this->sFileType") || ($this->vBackgroundImages != '' && ! function_exists('\imagecreatetruecolor'))) {
+            if (! function_exists('imagecreate') || ! function_exists("image".$this->sFileType) || ($this->vBackgroundImages != '' && ! function_exists('imagecreatetruecolor'))) {
                 throw new \Exception('GD Library not found');
             }
         } catch (Exception $e) {
